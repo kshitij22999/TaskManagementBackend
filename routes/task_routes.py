@@ -22,12 +22,12 @@ def create_task():
 @tasks_bp.route('/tasks/<task_id>', methods=['PUT'])
 def update_task(task_id):
     data = request.json
-    tasks.update_one({"_id": task_id}, {"$set": data})
+    tasks.update_one({"_id": ObjectId(task_id)}, {"$set": data})
     return jsonify({"message": "Task updated successfully"}), 200
 
 @tasks_bp.route('/tasks/<task_id>', methods=['DELETE'])
 def delete_task(task_id):
-    tasks.delete_one({"_id": task_id})
+    tasks.delete_one({"_id": ObjectId(task_id)})
     return jsonify({"message": "Task deleted successfully"}), 200
 
 @tasks_bp.route('/tasks', methods=['GET'])
@@ -35,3 +35,4 @@ def get_tasks():
     filters = request.args.to_dict()
     task_list = list(tasks.find(filters))
     return jsonify(parse_json(task_list)), 200
+
